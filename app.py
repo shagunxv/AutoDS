@@ -110,6 +110,14 @@ def analyze():
         axis=1
     )
     X,y=preprocess_data(temp_df,target)
+    if len(X) > 3000:
+
+        X = X.sample(
+        n=3000,
+        random_state=42
+    )
+
+    y = y.loc[X.index]
     X_train, X_test, y_train, y_test = train_test_split(
         X,
         y,

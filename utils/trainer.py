@@ -1,3 +1,4 @@
+import gc
 from sklearn.linear_model import(
     LogisticRegression,
     LinearRegression,
@@ -50,21 +51,21 @@ def train_models(
 
         models = {
             "Logistic Regression":
-                LogisticRegression(max_iter=1000),
+                LogisticRegression(max_iter=1000,random_state=42),
 
             "Decision Tree":
-                DecisionTreeClassifier(random_state=42),
+                DecisionTreeClassifier(random_state=42,max_depth=10),
 
             "Random Forest":
-                RandomForestClassifier(random_state=42),
+                RandomForestClassifier(
+    n_estimators=50,
+    random_state=42
+),
             "K-Nearest Neighbors" :
-                KNeighborsClassifier(),
-            "Support Vector Machine":
-                SVC(),
+                KNeighborsClassifier(n_neighbors=5),
             "Gradient Boosting":
-                GradientBoostingClassifier(random_state=42),
-            "Extra Tress":
-                ExtraTreesClassifier(random_state=42)
+                GradientBoostingClassifier(random_state=42,n_estimators=20),
+
         }
 
         for name, model in models.items():
@@ -105,6 +106,8 @@ def train_models(
                 "recall": recall,
                 "f1": f1
             }
+            del predictions
+            gc.collect()
 
         best_model = max(
             results,
@@ -123,20 +126,20 @@ def train_models(
                 LinearRegression(),
 
             "Decision Tree":
-                DecisionTreeRegressor(random_state=42),
+                DecisionTreeRegressor(random_state=42,max_depth=10),
 
             "Random Forest":
-                RandomForestRegressor(random_state=42),
+                RandomForestRegressor(random_state=42,max_depth=10,n_estimators=20,n_jobs=1),
             "Ridge Regression":
                 Ridge(),
             "Lasso Regression":
                 Lasso(),
             "KNN Regressor":
-                KNeighborsRegressor(),
+                KNeighborsRegressor(n_neighbors=5),
             "Gradient Boosting":
-                GradientBoostingRegressor(random_state=42),
+                GradientBoostingRegressor(random_state=42,n_estimators=50),
             "Extra Trees":
-                ExtraTreesRegressor(random_state=42)
+                ExtraTreesRegressor(random_state=42,n_estimators=20,max_depth=10,n_jobs=1)
         }
 
         for name, model in models.items():
@@ -167,6 +170,8 @@ def train_models(
                 "mae": mae,
                 "rmse": rmse
             }
+            del predictions
+            gc.collect()
 
         best_model = max(
             results,
