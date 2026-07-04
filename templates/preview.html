@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dataset Overview | AutoDS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+
+        AutoDS
+
+    </div>
+
+</nav>
+
+
+<div class="container">
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+
+                Dataset Analysis
+
+            </h1>
+
+            <p>
+
+                Review your dataset before training your models.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- Statistics -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <h2>{{ rows }}</h2>
+
+            <p>Total Rows</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>{{ cols }}</h2>
+
+            <p>Total Columns</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>{{ missing_values }}</h2>
+
+            <p>Missing Values</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>{{ duplicates }}</h2>
+
+            <p>Duplicates</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>{{ numerical_cols }}</h2>
+
+            <p>Numerical Features</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>{{ categorical_cols }}</h2>
+
+            <p>Categorical Features</p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Selection Card -->
+
+    <div class="card">
+
+        <h2>
+
+            Configure Model
+
+        </h2>
+
+        <p>
+
+            Choose your target column and the features to train on.
+
+        </p>
+
+        <form action="/analyze"
+              method="POST">
+
+            <input
+                type="hidden"
+                name="filepath"
+                value="{{ filepath }}">
+
+
+            <label>
+
+                Target Variable
+
+            </label>
+
+            <br><br>
+
+            <select
+                name="target"
+                required>
+
+                {% for col in column_names %}
+
+                <option value="{{ col }}">
+
+                    {{ col }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <br><br><br>
+
+            <label>
+
+                Independent Variables
+
+            </label>
+
+            <br><br>
+
+            <div class="feature-grid">
+
+                {% for col in column_names %}
+
+                <label class="checkbox-card">
+
+                    <input
+                        type="checkbox"
+                        name="features"
+                        value="{{ col }}">
+
+                    {{ col }}
+
+                </label>
+
+                {% endfor %}
+
+            </div>
+
+            <br>
+
+            <button type="submit">
+
+                Train Models
+
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- Dataset Preview -->
+
+    <div class="card">
+
+        <h2>
+
+            Dataset Preview
+
+        </h2>
+
+        <p>
+
+            First five records from your uploaded dataset.
+
+        </p>
+
+        <br>
+
+       <div class="table-wrapper">
+         {{ preview_table|safe }}
+    </div>
+
+    </div>
+    
+
+</div>
+
+<footer>
+
+    AutoDS • Automated Machine Learning Platform
+
+</footer>
+
+</body>
+
+</html>

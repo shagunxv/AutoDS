@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AutoDS Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static',
+          filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+
+        AutoDS
+
+    </div>
+
+</nav>
+
+<div class="container">
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>
+
+                Analysis Dashboard
+
+            </h1>
+
+            <p>
+
+                Your machine learning pipeline has finished successfully.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- HERO CARD -->
+
+    <div class="hero-result">
+
+        <h2>
+
+            🏆 Best Model
+
+        </h2>
+
+        <h1>
+
+            {{ best_model }}
+
+        </h1>
+
+        <p>
+
+            {{ "%.4f"|format(best_score) }}
+
+        </p>
+
+    </div>
+
+
+    <!-- SUMMARY -->
+
+    <div class="stats-grid">
+
+        <div class="stat-card">
+
+            <h2>{{ total_rows }}</h2>
+
+            <p>Total Rows</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>{{ total_columns }}</h2>
+
+            <p>Total Columns</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>{{ feature_count }}</h2>
+
+            <p>Features Used</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <h2>{{ problem_type }}</h2>
+
+            <p>Problem Type</p>
+
+        </div>
+
+    </div>
+
+
+    <!-- TARGET -->
+
+    <div class="card">
+
+        <h2>
+
+            Selected Target
+
+        </h2>
+
+        <p>
+
+            {{ target }}
+
+        </p>
+
+    </div>
+
+
+    <!-- FEATURES -->
+
+    <div class="card">
+
+        <h2>
+
+            Selected Features
+
+        </h2>
+
+        <div class="feature-grid">
+
+            {% for feature in selected_features %}
+
+            <div class="checkbox-card">
+
+                {{ feature }}
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+    <!-- MODEL TABLE -->
+
+    <div class="card">
+
+        <h2>
+
+            Model Performance
+
+        </h2>
+
+        <br>
+
+{% if problem_type=="Classification" %}
+
+<table>
+
+<tr>
+
+<th>Model</th>
+
+<th>Accuracy</th>
+
+<th>Precision</th>
+
+<th>Recall</th>
+
+<th>F1</th>
+
+</tr>
+
+{% for model, metric in results.items() %}
+
+<tr>
+
+<td>{{ model }}</td>
+
+<td>{{ "%.4f"|format(metric.accuracy) }}</td>
+
+<td>{{ "%.4f"|format(metric.precision) }}</td>
+
+<td>{{ "%.4f"|format(metric.recall) }}</td>
+
+<td>{{ "%.4f"|format(metric.f1) }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endif %}
+
+
+{% if problem_type=="Regression" %}
+
+<table>
+
+<tr>
+
+<th>Model</th>
+
+<th>R²</th>
+
+<th>MAE</th>
+
+<th>RMSE</th>
+
+</tr>
+
+{% for model, metric in results.items() %}
+
+<tr>
+
+<td>{{ model }}</td>
+
+<td>{{ "%.4f"|format(metric.r2) }}</td>
+
+<td>{{ "%.4f"|format(metric.mae) }}</td>
+
+<td>{{ "%.4f"|format(metric.rmse) }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endif %}
+
+    </div>
+
+
+    <!-- VISUALIZATIONS -->
+
+    <h2 class="section-title">
+
+        Visual Insights
+
+    </h2>
+
+    <div class="graph-grid">
+
+        <div class="card">
+
+            <h3>Correlation Heatmap</h3>
+
+            <img src="{{ url_for('static',
+            filename='plots/heatmap.png') }}">
+
+        </div>
+
+        <div class="card">
+
+            <h3>Missing Values</h3>
+
+            <img src="{{ url_for('static',
+            filename='plots/missing.png') }}">
+
+        </div>
+
+        <div class="card">
+
+            <h3>Target Distribution</h3>
+
+            <img src="{{ url_for('static',
+            filename='plots/target.png') }}">
+
+        </div>
+
+        <div class="card">
+
+            <h3>Feature Importance</h3>
+
+            <img src="{{ url_for('static',
+            filename='plots/feature_importance.png') }}">
+
+        </div>
+
+    </div>
+
+
+    <!-- DOWNLOADS -->
+
+    <div class="download-section">
+
+        <a href="/download-model">
+
+            <button>
+
+                Download Trained Model
+
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+<footer>
+
+AutoDS • Automated Machine Learning Platform
+
+</footer>
+
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+# Virtual Environment
+venv/
+# Python Cache
+__pycache__/
+*.pyc
+# Datasets
+uploads/
+# Saved models
+saved_models/
+# Generated Plots
+static/plots/
+# VS settings
+.vscode/
+#Environment Variables
+.env
+# DS Files
+.DS_Store
+Thumbs.db

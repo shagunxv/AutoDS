@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoDS</title>
+ <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">
+        AutoDS
+    </div>
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">Features</a>
+        <a href="#">About</a>
+    </div>
+</nav>
+<section class="hero">
+    <div class="hero-content">
+        <h1>
+            Welcome to AutoDS
+            <br>
+            <span>Made Beautiful</span>
+        </h1>
+        <p>
+            Upload any Dataset.
+            Train multiple ML models.
+            Compare Results.
+            Generate Insights.
+        </p>
+
+    </div>
+
+</section>
+<section class="upload-card">
+    <h2>Upload Your Dataset </h2>
+    <p>
+        CSV file supported.
+    </p>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="dataset" accept=".csv" required>
+        <button type="submit">Analyze dataset</button>
+    </form>
+</section>
+<footer>
+    Built using Flask and Scikit-learn. &copy; AutoDS. All rights reserved.
+</footer>
+</body>
+</html>
