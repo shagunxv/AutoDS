@@ -78,26 +78,31 @@ AutoDS is a Flask-based Automated Machine Learning platform that allows users to
 
 ### 🏠 Landing Page
 
-> "C:\Users\shagu\OneDrive\Pictures\Screenshots\Screenshot (74).png"
+> <img width="1366" height="768" alt="LandingPage" src="https://github.com/user-attachments/assets/41c8c5a7-e1c0-4fb1-95ac-70655deaeb38" />
+
 
 ---
 
 ### 📂 Dataset Preview
 
-> "C:\Users\shagu\OneDrive\Pictures\Screenshots\Screenshot (75).png"
-> "C:\Users\shagu\OneDrive\Pictures\Screenshots\Screenshot (76).png"
+> <img width="1366" height="768" alt="DataSet_Analysis" src="https://github.com/user-attachments/assets/bd0376dc-9dbb-41c4-a949-31c341247282" />
+
+><img width="1366" height="768" alt="DatasetPreview" src="https://github.com/user-attachments/assets/2b34764d-9fff-48b2-90a8-6712d58a4c77" />
+
 
 ---
 
 ### 📊 Model Comparison
  
-> "C:\Users\shagu\OneDrive\Pictures\Screenshots\Screenshot (77).png"
+> <img width="1366" height="768" alt="ModelComparison" src="https://github.com/user-attachments/assets/7f3d7b8c-3603-4da2-9cde-b0e326a33585" />
+
 
 ---
 
 ### 📈 Analysis Dashboard
 
-> "C:\Users\shagu\OneDrive\Pictures\Screenshots\Screenshot (78).png" 
+><img width="1366" height="768" alt="AnalysisDashboard" src="https://github.com/user-attachments/assets/92bfa3fc-9991-46b2-b882-6854ea59539e" />
+ 
 
 ---
 
