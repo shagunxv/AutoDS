@@ -110,10 +110,10 @@ def analyze():
         axis=1
     )
     X,y=preprocess_data(temp_df,target)
-    if len(X) > 1500:
+    if len(X) > 3000:
 
         X = X.sample(
-        n=1500,
+        n=3000,
         random_state=42
     )
 

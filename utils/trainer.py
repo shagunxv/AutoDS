@@ -68,7 +68,7 @@ def train_models(
 
         }
 
-        for name, model in models.items():
+    for name, model in models.items():
 
             model.fit(X_train, y_train)
 
@@ -109,13 +109,13 @@ def train_models(
             del predictions
             gc.collect()
 
-        best_model = max(
+            best_model = max(
             results,
             key=lambda x:
             results[x]["accuracy"]
         )
 
-        best_score = results[
+            best_score = results[
             best_model
         ]["accuracy"]
 
