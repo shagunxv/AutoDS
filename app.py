@@ -17,7 +17,8 @@ UPLOAD_FOLDER = "uploads"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
+os.makedirs("saved_models", exist_ok=True)
+os.makedirs("static/plots", exist_ok=True)
 
 @app.route("/")
 def home():
@@ -153,4 +154,4 @@ def download_model():
     )
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0",port=5000,debug=True)
