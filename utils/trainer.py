@@ -51,23 +51,11 @@ def train_models(
 
         models = {
             "Logistic Regression":
-                LogisticRegression(max_iter=1000,random_state=42),
-
-            "Decision Tree":
-                DecisionTreeClassifier(random_state=42,max_depth=10),
-
-            "Random Forest":
-                RandomForestClassifier(
-    n_estimators=50,
-    random_state=42
-),
-            "K-Nearest Neighbors" :
-                KNeighborsClassifier(n_neighbors=5),
-            "Gradient Boosting":
-                GradientBoostingClassifier(random_state=42,n_estimators=20),
-
-        }
-
+            LogisticRegression(
+            max_iter=1000,
+            random_state=42
+        )
+}
         for name, model in models.items():
 
             model.fit(X_train, y_train)
