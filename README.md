@@ -1,5 +1,9 @@
 # 🚀 AutoDS
 
+## Deployed Link
+
+https://autods-vjrn.onrender.com
+
 ### Automated Machine Learning Platform
 
 AutoDS is a Flask-based Automated Machine Learning platform that allows users to upload a dataset, select target and feature columns, automatically preprocess data, detect the machine learning problem type, compare multiple models, visualize the dataset, and download the best trained model.
