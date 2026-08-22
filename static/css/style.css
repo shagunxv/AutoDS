@@ -237,8 +237,7 @@ button:hover{
 
     max-width:1200px;
 
-    margin:auto;
-
+    margin:auto;    
     padding:50px 0;
 
 }
@@ -258,9 +257,19 @@ button:hover{
 
     margin-bottom:25px;
 
-    transition:.3s;
+    transition:0.3s;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 0.8rem;
+
+
 
 }
+
+
 
 .card:hover{
 
