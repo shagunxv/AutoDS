@@ -1,47 +1,41 @@
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-def preprocess_data(df, target):
+def build_preprocessor(X):
 
-    X = df.drop(columns=[target])
-    y = df[target]
+    numerical_features = X.select_dtypes(
+        include=["number"]
+    ).columns.tolist()
 
-    # Handle missing values
+    categorical_features = X.select_dtypes(
+        include=["object", "category", "bool"]
+    ).columns.tolist()
+    numerical_pipeline = Pipeline([
+        ("imputer", SimpleImputer(strategy="median")),
+        ("scaler", StandardScaler())
+    ])
 
-    for col in X.columns:
+  
+    categorical_pipeline = Pipeline([
+        ("imputer", SimpleImputer(
+            strategy="constant",
+            fill_value="Missing"
+        )),
+        ("encoder", OneHotEncoder(
+            handle_unknown="ignore"
+        ))
+    ])
 
-        if pd.api.types.is_numeric_dtype(X[col]):
+    
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ("numerical", numerical_pipeline, numerical_features),
+            ("categorical", categorical_pipeline, categorical_features)
+        ],
+        remainder="drop"
+    )
 
-            X[col] = X[col].fillna(
-                X[col].median()
-            )
-
-        else:
-
-            X[col] = X[col].fillna(
-                X[col].mode()[0]
-            )
-
-    # Encode categorical columns
-
-    for col in X.select_dtypes(
-        include=["object"]
-    ).columns:
-
-        encoder = LabelEncoder()
-
-        X[col] = encoder.fit_transform(
-            X[col].astype(str)
-        )
-
-    # Encode target if classification
-
-    if y.dtype == "object":
-
-        target_encoder = LabelEncoder()
-
-        y = target_encoder.fit_transform(
-            y.astype(str)
-        )
-
-    return X, y
+    return preprocessor

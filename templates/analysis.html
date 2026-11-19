@@ -1,319 +1,245 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>AutoDS Dashboard</title>
 
     <link rel="stylesheet"
-          href="{{ url_for('static',
-          filename='css/style.css') }}">
-
+          href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
 
 <nav>
-
-    <div class="logo">
-
-        AutoDS
-
-    </div>
-
+    <div class="logo">AutoDS</div>
 </nav>
 
 <div class="container">
 
+    <!-- HERO -->
     <section class="hero">
-
         <div class="hero-content">
-
-            <h1>
-
-                Analysis Dashboard
-
-            </h1>
-
-            <p>
-
-                Your machine learning pipeline has finished successfully.
-
-            </p>
-
+            <h1>Analysis Dashboard</h1>
+            <p>Your machine learning pipeline has finished successfully.</p>
         </div>
-
     </section>
 
-
-    <!-- HERO CARD -->
-
+    <!-- BEST MODEL -->
     <div class="hero-result">
-
-        <h2>
-
-            🏆 Best Model
-
-        </h2>
-
-        <h1>
-
-            {{ best_model }}
-
-        </h1>
-
-        <p>
-
-            {{ "%.4f"|format(best_score) }}
-
-        </p>
-
+        <h2>🏆 Best Model</h2>
+        <h1>{{ best_model }}</h1>
+        <p>{{ "%.4f"|format(best_score) }}</p>
     </div>
 
-
     <!-- SUMMARY -->
-
     <div class="stats-grid">
 
         <div class="stat-card">
-
             <h2>{{ total_rows }}</h2>
-
             <p>Total Rows</p>
-
         </div>
 
         <div class="stat-card">
-
             <h2>{{ total_columns }}</h2>
-
             <p>Total Columns</p>
-
         </div>
 
         <div class="stat-card">
-
             <h2>{{ feature_count }}</h2>
-
             <p>Features Used</p>
-
         </div>
 
         <div class="stat-card">
-
             <h2>{{ problem_type }}</h2>
-
             <p>Problem Type</p>
-
         </div>
 
     </div>
-
 
     <!-- TARGET -->
-
     <div class="card">
-
-        <h2>
-
-            Selected Target
-
-        </h2>
-
-        <p>
-
-            {{ target }}
-
-        </p>
-
+        <h2>Selected Target</h2>
+        <p>{{ target }}</p>
     </div>
-
 
     <!-- FEATURES -->
-
     <div class="card">
-
-        <h2>
-
-            Selected Features
-
-        </h2>
+        <h2>Selected Features</h2>
 
         <div class="feature-grid">
-
             {% for feature in selected_features %}
-
-            <div class="checkbox-card">
-
-                {{ feature }}
-
-            </div>
-
+                <div class="checkbox-card">
+                    {{ feature }}
+                </div>
             {% endfor %}
-
         </div>
+    </div>
+
+    <!-- MODEL PERFORMANCE -->
+    <div class="card">
+
+        <h2>Model Performance</h2>
+        <br>
+
+        {% if problem_type == "Classification" %}
+
+        <table>
+            <tr>
+                <th>Model</th>
+                <th>CV Score</th>
+                <th>Accuracy</th>
+                <th>Precision</th>
+                <th>Recall</th>
+                <th>F1</th>
+            </tr>
+
+            {% for model, metric in results.items() %}
+            <tr>
+                <td>{{ model }}</td>
+                <td>{{ "%.4f"|format(metric.cv_score) }}</td>
+                <td>{{ "%.4f"|format(metric.accuracy) }}</td>
+                <td>{{ "%.4f"|format(metric.precision) }}</td>
+                <td>{{ "%.4f"|format(metric.recall) }}</td>
+                <td>{{ "%.4f"|format(metric.f1) }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        {% elif problem_type == "Regression" %}
+
+        <table>
+            <tr>
+                <th>Model</th>
+                <th>CV Score</th>
+                <th>R²</th>
+                <th>MAE</th>
+                <th>RMSE</th>
+            </tr>
+
+            {% for model, metric in results.items() %}
+            <tr>
+                <td>{{ model }}</td>
+                <td>{{ "%.4f"|format(metric.cv_score) }}</td>
+                <td>{{ "%.4f"|format(metric.r2) }}</td>
+                <td>{{ "%.4f"|format(metric.mae) }}</td>
+                <td>{{ "%.4f"|format(metric.rmse) }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        {% endif %}
 
     </div>
 
-
-    <!-- MODEL TABLE -->
+    <!-- CLASSIFICATION REPORT -->
+    {% if problem_type == "Classification" and classification_report_data %}
 
     <div class="card">
 
-        <h2>
+        <h2>Classification Report</h2>
 
-            Model Performance
+        <table>
+            <tr>
+                <th>Class</th>
+                <th>Precision</th>
+                <th>Recall</th>
+                <th>F1 Score</th>
+                <th>Support</th>
+            </tr>
 
-        </h2>
+            {% for label, metrics in classification_report_data.items() %}
 
-        <br>
+                {% if metrics is mapping and 'precision' in metrics %}
 
-{% if problem_type=="Classification" %}
+                <tr>
+                    <td>{{ label }}</td>
+                    <td>{{ "%.4f"|format(metrics.precision) }}</td>
+                    <td>{{ "%.4f"|format(metrics.recall) }}</td>
+                    <td>{{ "%.4f"|format(metrics["f1-score"]) }}</td>
+                    <td>{{ metrics.support }}</td>
+                </tr>
 
-<table>
+                {% endif %}
 
-<tr>
-
-<th>Model</th>
-
-<th>Accuracy</th>
-
-<th>Precision</th>
-
-<th>Recall</th>
-
-<th>F1</th>
-
-</tr>
-
-{% for model, metric in results.items() %}
-
-<tr>
-
-<td>{{ model }}</td>
-
-<td>{{ "%.4f"|format(metric.accuracy) }}</td>
-
-<td>{{ "%.4f"|format(metric.precision) }}</td>
-
-<td>{{ "%.4f"|format(metric.recall) }}</td>
-
-<td>{{ "%.4f"|format(metric.f1) }}</td>
-
-</tr>
-
-{% endfor %}
-
-</table>
-
-{% endif %}
-
-
-{% if problem_type=="Regression" %}
-
-<table>
-
-<tr>
-
-<th>Model</th>
-
-<th>R²</th>
-
-<th>MAE</th>
-
-<th>RMSE</th>
-
-</tr>
-
-{% for model, metric in results.items() %}
-
-<tr>
-
-<td>{{ model }}</td>
-
-<td>{{ "%.4f"|format(metric.r2) }}</td>
-
-<td>{{ "%.4f"|format(metric.mae) }}</td>
-
-<td>{{ "%.4f"|format(metric.rmse) }}</td>
-
-</tr>
-
-{% endfor %}
-
-</table>
-
-{% endif %}
+            {% endfor %}
+        </table>
 
     </div>
 
+    {% endif %}
 
-    <!-- VISUALIZATIONS -->
-
-    <h2 class="section-title">
-
-        Visual Insights
-
-    </h2>
+    <!-- VISUAL INSIGHTS -->
+    <h2 class="section-title">Visual Insights</h2>
 
     <div class="graph-grid">
 
-        <div class="card">
+        <!-- COMMON GRAPHS -->
 
+        <div class="card">
             <h3>Correlation Heatmap</h3>
-
-            <img src="{{ url_for('static',
-            filename='plots/heatmap.png') }}">
-
+            <img src="{{ url_for('static', filename='plots/heatmap.png') }}"
+                 alt="Correlation Heatmap">
         </div>
 
         <div class="card">
-
             <h3>Missing Values</h3>
-
-            <img src="{{ url_for('static',
-            filename='plots/missing.png') }}">
-
+            <img src="{{ url_for('static', filename='plots/missing.png') }}"
+                 alt="Missing Values">
         </div>
 
         <div class="card">
-
             <h3>Target Distribution</h3>
-
-            <img src="{{ url_for('static',
-            filename='plots/target.png') }}">
-
+            <img src="{{ url_for('static', filename='plots/target.png') }}"
+                 alt="Target Distribution">
         </div>
 
         <div class="card">
-
             <h3>Feature Importance</h3>
-
-            <img src="{{ url_for('static',
-            filename='plots/feature_importance.png') }}">
-
+            <img src="{{ url_for('static', filename='plots/feature_importance.png') }}"
+                 alt="Feature Importance">
         </div>
+
+        <!-- CLASSIFICATION GRAPHS -->
+
+        {% if problem_type == "Classification" %}
+
+        <div class="card">
+            <h3>Confusion Matrix</h3>
+            <img src="{{ url_for('static', filename='plots/confusion_matrix.png') }}"
+                 alt="Confusion Matrix">
+        </div>
+
+        <div class="card">
+            <h3>ROC Curve</h3>
+            <img src="{{ url_for('static', filename='plots/roc_curve.png') }}"
+                 alt="ROC Curve">
+        </div>
+
+        {% endif %}
+
+        <!-- REGRESSION GRAPH -->
+
+        {% if problem_type == "Regression" %}
+
+        <div class="card">
+            <h3>Actual vs Predicted</h3>
+            <img src="{{ url_for('static', filename='plots/actual_vs_predicted.png') }}"
+                 alt="Actual vs Predicted">
+        </div>
+
+        {% endif %}
 
     </div>
 
-
-    <!-- DOWNLOADS -->
-
+    <!-- DOWNLOAD -->
     <div class="download-section">
 
         <a href="/download-model">
-
-            <button>
-
-                Download Trained Model
-
-            </button>
-
+            <button>Download Trained Model</button>
         </a>
 
     </div>
@@ -321,11 +247,8 @@
 </div>
 
 <footer>
-
-AutoDS • Automated Machine Learning Platform
-
+    AutoDS • Automated Machine Learning Platform
 </footer>
 
 </body>
-
 </html>
