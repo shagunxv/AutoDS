@@ -209,7 +209,7 @@ def generate_roc_curve(best_pipeline, X_test, y_test):
 def get_cv_strategy(y_train, problem_type):
     if problem_type == "Classification":
         min_class_count = y_train.value_counts().min()
-        n_splits = min(5, min_class_count)
+        n_splits = min(3, min_class_count)
 
         if n_splits < 2:
             raise ValueError(
@@ -223,7 +223,7 @@ def get_cv_strategy(y_train, problem_type):
         )
 
     return KFold(
-        n_splits=5,
+        n_splits=3,
         shuffle=True,
         random_state=42
     )
@@ -336,7 +336,7 @@ def train_models(X_train, X_test, y_train, y_test, problem_type):
                 search = RandomizedSearchCV(
                     estimator=pipeline,
                     param_distributions=get_parameter_grid(problem_type),
-                    n_iter=8,
+                    n_iter=2,
                     scoring=scoring,
                     cv=cv,
                     random_state=42,

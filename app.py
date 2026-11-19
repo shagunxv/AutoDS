@@ -147,8 +147,8 @@ def analyze():
         problem_type = "Regression"
 
     # Limit dataset size
-    if len(df) > 1500:
-        df = df.sample(n=1500, random_state=42)
+    if len(df) > 500:
+        df = df.sample(n=500, random_state=42)
 
     X = df[selected_features]
     y = df[target]
